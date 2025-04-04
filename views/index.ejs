@@ -8,11 +8,16 @@
 <body>
     <div class="box">
         <% if (locals.data) { %>
-        <ul>
-            <% data.forEach(image => {
-                
-            }); %>
-        </ul>
+            <% 
+            let i=-1
+            data.forEach(image => { 
+                i++
+                %>
+                <div id="<%=i%>">
+                    <h2><%=image.title%></h2>
+                    <img src="<%=`/uploads/${image.image}`%>">
+                    </div>
+           <% }); %>
             <%    } %>
     </div>
     <form action="/api/images" method="post" enctype="multipart/form-data">

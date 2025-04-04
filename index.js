@@ -7,13 +7,15 @@ const port = 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Ensure JSON file exists
 const filePath = "Images.json";
 if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, "[]", "utf8"); // Create empty JSON array
+    fs.writeFileSync(filePath, "[]", "utf8");
 }
-
-// Handle storing image metadata
+app.get("/", (req,res) =>{
+    const data = fs.readFileSync(filePath, "utf8")
+    let jsonData = JSON.parse(data)
+    res.json(jsonData)
+})
 app.post("/images", (req, res) => {
     try {
         const data = fs.readFileSync(filePath, "utf8");
@@ -22,7 +24,7 @@ app.post("/images", (req, res) => {
         try {
             jsonData = JSON.parse(data);
         } catch (parseError) {
-            jsonData = []; // Reset if JSON is corrupted
+            jsonData = [];
         }
 
         const id = jsonData.length;
@@ -38,7 +40,6 @@ app.post("/images", (req, res) => {
 
         jsonData.push(image);
         fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2), "utf8");
-
         res.json(image);
     } catch (error) {
         console.error("Error saving image:", error);

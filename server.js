@@ -7,7 +7,6 @@ const app = express();
 const port = 3000;
 const API_URL = "http://localhost:4000";
 
-// Multer Storage Setup
 const storage = multer.diskStorage({
   destination: "uploads/",
   filename: (req, file, cb) => {
@@ -22,10 +21,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.set("view engine", "ejs");
-app.use(express.static("uploads"));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads"))); 
 
-app.get("/", (req, res) => {
-    res.render("index.ejs");
+app.get("/", async (req, res) => {
+    try{
+        const respone = await axios.get(API_URL)
+        res.render("index.ejs", {data:respone.data})
+    }catch(error){
+        res.status(500).json({ message: "Error creating post", error: error.message });
+    }
+    
 });
 
 app.post("/api/images", upload.single("image"), async (req, res) => {
