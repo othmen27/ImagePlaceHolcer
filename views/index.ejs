@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ImagesPlace Holder</title>
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
     <div class="box">
@@ -20,12 +21,15 @@
            <% }); %>
             <%    } %>
     </div>
-    <form action="/api/images" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Form</legend>
+        <form action="/api/images" method="post" enctype="multipart/form-data">
         <label for="title">Title: </label>
         <input type="text" name="title" id="title"><br>
         <label for="image">Image: </label>
         <input type="file" name="image" id="image" accept="image/*"><br>
         <input type="submit" name="submit" id="submit" value="Submit">
     </form>
+</fieldset>
 </body>
 </html>
